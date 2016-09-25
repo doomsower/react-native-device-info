@@ -1,10 +1,12 @@
 package com.learnium.RNDeviceInfo;
 
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.Settings.Secure;
+import android.telephony.TelephonyManager;
 
 import com.google.android.gms.iid.InstanceID;
 
@@ -80,6 +82,9 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
       e.printStackTrace();
     }
 
+    TelephonyManager telephonyManager = (TelephonyManager) reactContext.getSystemService(Context.TELEPHONY_SERVICE);
+    String phoneNumber = telephonyManager.getLine1Number();
+
     constants.put("instanceId", InstanceID.getInstance(this.reactContext).getId());
     constants.put("deviceName", deviceName);
     constants.put("systemName", "Android");
@@ -94,6 +99,7 @@ public class RNDeviceModule extends ReactContextBaseJavaModule {
     constants.put("bundleId", packageName);
     constants.put("userAgent", System.getProperty("http.agent"));
     constants.put("timezone", TimeZone.getDefault().getID());
+    constants.put("phoneNumber", phoneNumber);
     return constants;
   }
 }
